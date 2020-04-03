@@ -1,5 +1,6 @@
 package ru.sultanyarov.catancounter.presentation.view;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,9 +41,8 @@ public class PlayersFragment extends MvpAppCompatFragment implements PlayersView
     RecyclerView rvPlayers;
 
     @Inject
-    private
     Router router;
-
+    private Context context;
     private PlayersAdapter playersAdapter;
 
     public PlayersFragment() {
@@ -53,6 +53,12 @@ public class PlayersFragment extends MvpAppCompatFragment implements PlayersView
         Bundle args = new Bundle();
 
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        this.context = context;
+        super.onAttach(context);
     }
 
     @Override
@@ -81,7 +87,7 @@ public class PlayersFragment extends MvpAppCompatFragment implements PlayersView
         enableSwipeToDeleteAndUndo();
         if (playersAdapter == null) {
             playersAdapter = new PlayersAdapter();
-            rvPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
+            rvPlayers.setLayoutManager(new LinearLayoutManager(context));
             rvPlayers.setAdapter(playersAdapter);
 
             PublishSubjectHolder.getInstance().players.subscribe(new Observer<Player>() {
@@ -106,14 +112,14 @@ public class PlayersFragment extends MvpAppCompatFragment implements PlayersView
                 }
             });
         } else {
-            rvPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
+            rvPlayers.setLayoutManager(new LinearLayoutManager(context));
             rvPlayers.setAdapter(playersAdapter);
         }
     }
 
     @OnClick(R.id.fabAddPlayer)
     void onAddPlayerClicked() {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Создай игрока");
+        ((AppCompatActivity) context).getSupportActionBar().setTitle("Создай игрока");
         final Screens.CreatePlayerScreen createPlayerScreen;
         createPlayerScreen = new Screens.CreatePlayerScreen();
         MainActivity.playersCreateView = createPlayerScreen;
@@ -129,14 +135,14 @@ public class PlayersFragment extends MvpAppCompatFragment implements PlayersView
     @Override
     public void addPlayer(Player player) {
         if (playersAdapter.addPlayer(player)) {
-            Toast.makeText(getContext(), player.getName() + " успешно добавлен!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, player.getName() + " успешно добавлен!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getContext(), "Не удалось добавить игрока!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Не удалось добавить игрока!", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void enableSwipeToDeleteAndUndo() {
-        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getActivity()) {
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(context) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 final int position = viewHolder.getAdapterPosition();

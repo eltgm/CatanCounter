@@ -11,6 +11,7 @@ import ru.sultanyarov.catancounter.models.Player;
 import ru.sultanyarov.catancounter.models.ScreenKeys;
 import ru.sultanyarov.catancounter.presentation.view.EndGameFragment;
 import ru.sultanyarov.catancounter.presentation.view.GameActivity;
+import ru.sultanyarov.catancounter.presentation.view.MainActivity;
 import ru.sultanyarov.catancounter.presentation.view.PlayerCreateFragment;
 import ru.sultanyarov.catancounter.presentation.view.PlayersCreateView;
 import ru.sultanyarov.catancounter.presentation.view.PlayersFragment;
@@ -72,6 +73,18 @@ public class Screens {
 
         public Player addPlayer() {
             return playerCreateView.addPlayer();
+        }
+    }
+
+    public static final class MainScreen extends SupportAppScreen {
+        @Override
+        public Intent getActivityIntent(Context context) {
+            return new Intent(context, MainActivity.class);
+        }
+
+        @Override
+        public String getScreenKey() {
+            return ScreenKeys.MAIN;
         }
     }
 

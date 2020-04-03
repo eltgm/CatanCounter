@@ -42,10 +42,8 @@ public class MainActivity extends MvpAppCompatActivity {
         }
     };
     @Inject
-    private
     Router router;
     @Inject
-    private
     NavigatorHolder navigatorHolder;
     private Screens.EndGameScreen endGameScreen;
     private Screens.PlayersScreen playersScreen;
@@ -90,7 +88,7 @@ public class MainActivity extends MvpAppCompatActivity {
     private void navigateOnFragmentsBack() {
         switch (currentScreen) {
             case END_GAME:
-                finish();
+                finishAffinity();
                 break;
             case PLAYERS:
                 getSupportActionBar().setTitle("Конец игры");
@@ -105,6 +103,11 @@ public class MainActivity extends MvpAppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        navigateOnFragmentsBack();
+    }
+
     private void navigateOnFragmentsForward() {
         switch (currentScreen) {
             case END_GAME:
@@ -115,8 +118,8 @@ public class MainActivity extends MvpAppCompatActivity {
                         playersScreen = new Screens.PlayersScreen();
                         currentScreen = playersScreen.getScreenKey();
                         router.navigateTo(playersScreen);
-                        break;
                     }
+                    break;
                 }
             case PLAYERS:
                 final List<Player> players = playersScreen.getPlayers();

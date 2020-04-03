@@ -3,6 +3,7 @@ package ru.sultanyarov.catancounter.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import ru.sultanyarov.catancounter.presentation.view.GameActivity;
 import ru.sultanyarov.catancounter.presentation.view.MainActivity;
 import ru.sultanyarov.catancounter.presentation.view.PlayerCreateFragment;
 import ru.sultanyarov.catancounter.presentation.view.PlayersFragment;
@@ -15,4 +16,6 @@ public interface AppComponent {
     void injectPlayersFragment(PlayersFragment playersFragment);
 
     void injectCreatePlayerFragment(PlayerCreateFragment playerCreateFragment);
+
+    void injectGameActivity(GameActivity gameActivity);
 }

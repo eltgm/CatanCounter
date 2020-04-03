@@ -73,11 +73,13 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
 
     public void removeItem(int position) {
         players.remove(position);
+        playersOrder.remove(new Integer(position));
         notifyItemRemoved(position);
     }
 
     public void restoreItem(Player item, int position) {
         players.add(position, item);
+        playersOrder.add(position);
         notifyItemInserted(position);
     }
 

@@ -146,7 +146,7 @@ public class PlayersFragment extends MvpAppCompatFragment implements PlayersView
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 final int position = viewHolder.getAdapterPosition();
-                final Player item = playersAdapter.getPlayers().get(position);
+                final Player item = playersAdapter.getPlayersWithoutSelect().get(position);
 
                 playersAdapter.removeItem(position);
 

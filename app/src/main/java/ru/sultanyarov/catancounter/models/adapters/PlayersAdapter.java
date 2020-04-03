@@ -35,6 +35,10 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
         return false;
     }
 
+    public List<Player> getPlayersWithoutSelect() {
+        return players;
+    }
+
     public List<Player> getPlayers() {
         final List<Player> playersOrderedList = new ArrayList<>(players.size());
         for (Integer pos :

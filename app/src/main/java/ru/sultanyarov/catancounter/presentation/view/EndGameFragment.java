@@ -49,6 +49,13 @@ public class EndGameFragment extends MvpAppCompatFragment implements EndGameView
             return 0;
         }
 
-        return Integer.parseInt(pointsString);
+        final int points = Integer.parseInt(pointsString);
+        if (points < 10 || points > 20) {
+            etPointsToWin.requestFocus();
+            etPointsToWin.setError("Очков должно быть больше 9 и меньше 21!");
+
+            return 0;
+        }
+        return points;
     }
 }

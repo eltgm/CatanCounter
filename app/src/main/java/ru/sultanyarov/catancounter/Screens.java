@@ -52,7 +52,7 @@ public class Screens {
         }
 
         public List<Player> getPlayers() {
-            return fragment.getPlayersString();
+            return fragment.playersAdapter.getPlayers();
         }
     }
 

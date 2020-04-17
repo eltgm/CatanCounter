@@ -23,17 +23,25 @@ import ru.sultanyarov.catancounter.models.Player;
 public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHolder> {
     private final List<Player> players = new ArrayList<>(6);
     private final List<Integer> playersOrder = new ArrayList<>(6);
-    private final boolean[] selectedPosition = new boolean[6];
+    private final List<Boolean> selectedPosition = new ArrayList<>();
     private Context context;
 
     public boolean addPlayer(Player player) {
-        if (players.size() <= 5) {
-            notifyDataSetChanged();
-            return players.add(player);
+        notifyDataSetChanged();
+        selectedPosition.add(false);
+        return players.add(player);
+    }
+
+    public void addPlayers(List<Player> players) {
+        this.players.clear();
+        for (Player player : players) {
+            this.players.add(player);
+            selectedPosition.add(false);
         }
 
-        return false;
+        notifyDataSetChanged();
     }
+
 
     public List<Player> getPlayersWithoutSelect() {
         return players;
@@ -60,10 +68,14 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(context, players.get(position));
-        if (selectedPosition[position])
-            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryHighlight));
-        else
+        if (selectedPosition.get(position) != null) {
+            if (selectedPosition.get(position))
+                holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryHighlight));
+            else
+                holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.colorSecondaryHighlight));
+        } else {
             holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.colorSecondaryHighlight));
+        }
     }
 
     @Override
@@ -96,8 +108,8 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.ViewHold
             itemView.setOnClickListener(v -> {
                 if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
 
-                selectedPosition[getAdapterPosition()] = !selectedPosition[getAdapterPosition()];
-                if (selectedPosition[getAdapterPosition()]) {
+                selectedPosition.set(getAdapterPosition(), !selectedPosition.get(getAdapterPosition()));
+                if (selectedPosition.get(getAdapterPosition())) {
                     playersOrder.add(getAdapterPosition());
                 } else {
                     playersOrder.remove(new Integer(getAdapterPosition()));

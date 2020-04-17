@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -33,6 +34,7 @@ import ru.sultanyarov.catancounter.di.App;
 import ru.sultanyarov.catancounter.models.Player;
 import ru.sultanyarov.catancounter.models.PublishSubjectHolder;
 import ru.sultanyarov.catancounter.models.adapters.PlayersAdapter;
+import ru.sultanyarov.catancounter.presentation.presenter.PlayersPresenter;
 import ru.terrakok.cicerone.Router;
 
 
@@ -40,10 +42,12 @@ public class PlayersFragment extends MvpAppCompatFragment implements PlayersView
     @BindView(R.id.rvPlayers)
     RecyclerView rvPlayers;
 
+    public PlayersAdapter playersAdapter;
     @Inject
     Router router;
     private Context context;
-    private PlayersAdapter playersAdapter;
+    @InjectPresenter
+    PlayersPresenter playersPresenter;
 
     public PlayersFragment() {
     }
@@ -128,12 +132,17 @@ public class PlayersFragment extends MvpAppCompatFragment implements PlayersView
     }
 
     @Override
-    public List<Player> getPlayersString() {
-        return playersAdapter.getPlayers();
+    public void addPlayer(Player player) {
+        playersPresenter.addPlayer(player);
     }
 
     @Override
-    public void addPlayer(Player player) {
+    public void addPlayers(List<Player> players) {
+        playersAdapter.addPlayers(players);
+    }
+
+    @Override
+    public void addPlayerToScreen(Player player) {
         if (playersAdapter.addPlayer(player)) {
             Toast.makeText(context, player.getName() + " успешно добавлен!", Toast.LENGTH_SHORT).show();
         } else {
@@ -149,12 +158,12 @@ public class PlayersFragment extends MvpAppCompatFragment implements PlayersView
                 final Player item = playersAdapter.getPlayersWithoutSelect().get(position);
 
                 playersAdapter.removeItem(position);
-
+                playersPresenter.removePlayer(item);
 
                 Snackbar snackbar = Snackbar
                         .make(getView(), "Игрок удалён.", Snackbar.LENGTH_LONG);
                 snackbar.setAction("Отмена", view -> {
-
+                    playersPresenter.addPlayer(item);
                     playersAdapter.restoreItem(item, position);
                     rvPlayers.scrollToPosition(position);
                 });

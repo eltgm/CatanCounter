@@ -8,7 +8,9 @@ public class App extends Application {
 
     public AppComponent getAppComponent() {
         if (component == null) {
-            component = DaggerAppComponent.builder().build();
+            component = DaggerAppComponent.builder()
+                    .roomModule(new RoomModule(this))
+                    .build();
         }
         return component;
     }

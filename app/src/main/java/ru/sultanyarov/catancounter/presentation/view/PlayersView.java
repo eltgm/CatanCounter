@@ -9,8 +9,11 @@ import java.util.List;
 import ru.sultanyarov.catancounter.models.Player;
 
 @StateStrategyType(OneExecutionStateStrategy.class)
+public
 interface PlayersView extends MvpView {
-    List<Player> getPlayersString();
-
     void addPlayer(Player player);
+
+    void addPlayers(List<Player> players);
+
+    void addPlayerToScreen(Player player);
 }
